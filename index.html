@@ -6,23 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <script>
-async function connectionMeta(){
-// metamask or any other wallet injects an windows.ethrium objects inside the browser so we will be basically be checking for this object to check if the browser is connected to metamask or not
-if(typeof window.ethereum !== "undefined"){
-    
-    // making metamask automatically pop up incase it is there
-    // on connection our website can make api calls to the metamask
-   await window.ethereum.request({method:"eth_requestAccounts"})
-   document.getElementById("connectButton").innerText="Connected"
-   console.log("connected")
-}else{
-    console.log("not connected to metamask")
-    document.getElementById("connectButton").innerText="Please install metamask"
-}}
+    <script src="index.js" type="module">
+
 
     </script>
     <h1>hello there</h1>
-    <button id="connectButton" onclick="connectionMeta()"> connect to metamask</button>
+    <button id="connectButton"> connect to metamask</button>
+    <button id="fundButton" > fund</button>
+
 </body>
 </html>
