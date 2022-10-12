@@ -34,10 +34,19 @@ async function connectionMeta(){
 
 
     //builing the fund functiona
-    
+
+
+    /**to send transaction on blockchain we require the fallowing things
+         * provider =>connection to the blockchain 
+         * signer =wallet to pay certain amount of gas 
+         * contract to interact with and for that we need abi and address
+         * 
+         */
+    const ethAmount='77'
     async function fundFunction(ethAmount){
 
         console.log(`funding with ${ethAmount}...`)
+
         if(typeof window.ethereum !== "undefined"){
            /**Web3Provider allows to wrap around stuff like metamask helping us to connect to the block chain
             * as we connect it to metamask it takes whatever end point the wallet is connected to and sticks it to our ethers
@@ -49,12 +58,12 @@ async function connectionMeta(){
             console.log(signer)
             const contract = new ethers.Contract(ContractAddress,abi,signer)
             // to interact with the smart contract we need its abi and address
+
+
+            // once we have connected to our smart contract we can send transaction and interact with our smart contract
+
+            const transactionResponse = await contract.fund({value:ethers.utils.parseEther(ethAmount)})
         }
 
-        /**to send transaction on blockchain we require the fallowing things
-         * provider =>connection to the blockchain 
-         * signer =wallet to pay certain amount of gas 
-         * contract to interact with and for that we need abi and address
-         * 
-         */
+        
     }
