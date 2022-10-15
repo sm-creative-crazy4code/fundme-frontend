@@ -6,6 +6,11 @@ import { abi,ContractAddress } from "./constants.js"
  */
 const connectButton=document.getElementById("connectButton")
 const fundButton=document.getElementById("fundButton")
+const withdrawButton = document.getElementById("withdrawButton")
+const ethAmount = document.getElementById("etheriumValue").value
+const getbalanceButton=document.getElementById("getbalance")
+getbalanceButton.onclick=getBalance
+
 
 fundButton.onclick=fundFunction
 
@@ -42,7 +47,7 @@ async function connectionMeta(){
          * contract to interact with and for that we need abi and address
          * 
          */
-    const ethAmount='77'
+    // const ethAmount='77'
     async function fundFunction(ethAmount){
 
         console.log(`funding with ${ethAmount}...`)
@@ -96,10 +101,39 @@ async function connectionMeta(){
         */
        return new Promise((resolve,reject)=>{
         provider.once(transactionResponse.hash,(transactionReceipt)=>{
-th
+
             console.log(`completed with ${transactionReceipt.confirmations}`)
         })
+        resolve()
        })
        
     }
-    
+
+
+     async function getBalance(){
+        if(typeof window.ethereum !== "undefined"){
+            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            const balance = await provide.getBalance(ContractAddress)//GETTING THE BALANCE
+            console.log(ethers.utils.formatEther(balance))//makes the contract readable
+
+        }
+
+
+    }
+
+
+
+    async function withdraw(){
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        
+            const signer = provider.getSigner()
+            console.log(signer)
+            const contract = new ethers.Contract(abi,signer)
+            try{
+
+                const transactionResponse= await contract.withdraw()
+            }
+
+
+        
+    }
