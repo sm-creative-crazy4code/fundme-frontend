@@ -2,22 +2,23 @@ import {ethers} from "./ethers-5.6.esm.min.js"
 import { abi,ContractAddress } from "./constants.js"
 
 /**ethers-5.6.esm.min.js has the frontendified version of ethers.js
- * frameworks like react and next.js converts this automatically to frontendified version
+ * frameworks like react and next.js converts this automatically to frontendified version getbalance
  */
-const connectButton=document.getElementById("connectButton")
+const connectButton=document.getElementById("connecButton")
 const fundButton=document.getElementById("fundButton")
 const withdrawButton = document.getElementById("withdrawButton")
-const ethAmount = document.getElementById("etheriumValue").value
+
 const getbalanceButton=document.getElementById("getbalance")
 getbalanceButton.onclick=getBalance
 
-
+withdrawButton.onclick= withdraw
 fundButton.onclick=fundFunction
 
-connectButton.onclick= connectionMeta
+connectButton.onclick=connectionMeta
 
 
 console.log(ethers)
+
 async function connectionMeta(){
     // metamask or any other wallet injects an windows.ethrium objects inside the browser so we will be basically be checking for this object to check if the browser is connected to metamask or not
     if(typeof window.ethereum !== "undefined"){
@@ -25,13 +26,13 @@ async function connectionMeta(){
         // making metamask automatically pop up incase it is there
         // on connection our website can make api calls to the metamask
        try{await window.ethereum.request({method:"eth_requestAccounts"})
-       document.getElementById("connectButton").innerText="Connected"
+       document.getElementById("connecButton").innerText="Connected"
        console.log("connected")}catch(error){
         console.log(error)
        }
     }else{
         console.log("not connected to metamask")
-        document.getElementById("connectButton").innerText="Please install metamask"
+        document.getElementById("connecButton").innerText="Please install metamask"
     }}
 
     /**
@@ -48,7 +49,8 @@ async function connectionMeta(){
          * 
          */
     // const ethAmount='77'
-    async function fundFunction(ethAmount){
+    async function fundFunction(){
+        const ethAmount = document.getElementById("etheriumValue").value
 
         console.log(`funding with ${ethAmount}...`)
 
@@ -100,11 +102,17 @@ async function connectionMeta(){
          * then
         */
        return new Promise((resolve,reject)=>{
+        try{
         provider.once(transactionResponse.hash,(transactionReceipt)=>{
 
             console.log(`completed with ${transactionReceipt.confirmations}`)
         })
         resolve()
+    
+    }catch(error){
+            reject(error)
+           }
+
        })
        
     }
@@ -113,7 +121,7 @@ async function connectionMeta(){
      async function getBalance(){
         if(typeof window.ethereum !== "undefined"){
             const provider = new ethers.providers.Web3Provider(window.ethereum)
-            const balance = await provide.getBalance(ContractAddress)//GETTING THE BALANCE
+            const balance = await provider.getBalance(ContractAddress)//GETTING THE BALANCE
             console.log(ethers.utils.formatEther(balance))//makes the contract readable
 
         }
@@ -130,8 +138,9 @@ async function connectionMeta(){
             console.log(signer)
             const contract = new ethers.Contract(abi,signer)
             try{
-
-                const transactionResponse= await contract.withdraw()
+                const transactionResponse= await contract.withdraw
+            }catch(error){
+                console.log(error)
             }
 
 
